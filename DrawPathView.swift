@@ -34,7 +34,7 @@ class DrawPathView: UIView {
     
     var delegate : DrawPathViewDelegate?
     
-    /// Stroke color of drawing path
+    /// Stroke color of drawing path. default is red
     var strokeColor = UIColor.redColor()
 
     /// Stores all ımages to get back to last - 1 image. Becase erase last needs this :)
