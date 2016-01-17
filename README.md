@@ -19,7 +19,18 @@ Usage is simple, you can just add as a subview DrawPathView which is inheritted 
     }
 ```
 
-### Delegates
+User also can delete paths as last drawn path or all paths at the same time.
+
+```swift
+internal func eraseLast() {
+        drawView.clearLast()
+    } 
+    
+internal func eraseAll() {
+		drawView.clearAll()
+	}
+```
+#### Delegates
 
 DrawPathView has also two delegate methods :
 
