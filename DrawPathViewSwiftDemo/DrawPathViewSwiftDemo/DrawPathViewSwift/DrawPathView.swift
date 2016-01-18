@@ -15,7 +15,7 @@ import UIKit
     optional func viewDrawEndedDrawing()
 }
 
-class DrawPathView: UIView {
+public class DrawPathView: UIView {
     
     /// A counter to determine if there are enough points to make a quadcurve
     private var ctr = 0
@@ -42,7 +42,7 @@ class DrawPathView: UIView {
     
     // MARK: - Initialize -
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         
         self.multipleTouchEnabled = true
@@ -50,7 +50,7 @@ class DrawPathView: UIView {
         createPath()
     }
     
-    required override init(frame: CGRect) {
+    required override public init(frame: CGRect) {
         super.init(frame: frame)
         self.multipleTouchEnabled = true
         self.backgroundColor = UIColor.whiteColor()
@@ -109,7 +109,7 @@ class DrawPathView: UIView {
     
     // MARK: - Draw Method -
     
-    override func drawRect(rect: CGRect) {
+    override public func drawRect(rect: CGRect) {
         if let img = incrementalImage {
             img.drawInRect(rect)
             strokeColor.setStroke()
@@ -125,7 +125,7 @@ class DrawPathView: UIView {
     
     // MARK: - Touch Events -
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         delegate?.viewDrawStartedDrawing?()
 
@@ -139,7 +139,7 @@ class DrawPathView: UIView {
         drawBitmap(false)
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override public func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         let touch =  touches.first
         let p = (touch?.locationInView(self))!
@@ -160,11 +160,11 @@ class DrawPathView: UIView {
         }
     }
     
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override public func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
         touchesEnded(touches!, withEvent: event)
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
 
         delegate?.viewDrawEndedDrawing?()
         drawBitmap(true)

@@ -15,7 +15,7 @@ import UIKit
     optional func viewDrawEndedDrawing()
 }
 
-class DrawPathView: UIView {
+public class DrawPathView: UIView {
     
     /// A counter to determine if there are enough points to make a quadcurve
     private var ctr = 0
@@ -28,21 +28,21 @@ class DrawPathView: UIView {
     
     /// Initial Image If user needs to draw lines on image firstly
     private var initialImage : UIImage?
-
+    
     /// This array stores the points that make each line
     private lazy var pts = Array<CGPoint!>(count: 5, repeatedValue: nil)
     
     var delegate : DrawPathViewDelegate?
     
-    /// Stroke color of drawing path. default is red
+    /// Stroke color of drawing path, default is red.
     var strokeColor = UIColor.redColor()
-
+    
     /// Stores all ımages to get back to last - 1 image. Becase erase last needs this :)
     private var allImages = Array<UIImage>()
     
     // MARK: - Initialize -
     
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         
         self.multipleTouchEnabled = true
@@ -50,7 +50,7 @@ class DrawPathView: UIView {
         createPath()
     }
     
-    required override init(frame: CGRect) {
+    required override public init(frame: CGRect) {
         super.init(frame: frame)
         self.multipleTouchEnabled = true
         self.backgroundColor = UIColor.whiteColor()
@@ -68,7 +68,7 @@ class DrawPathView: UIView {
         }
         createPath()
     }
-
+    
     // MARK: - Setup -
     
     private func createPath() {
@@ -109,7 +109,7 @@ class DrawPathView: UIView {
     
     // MARK: - Draw Method -
     
-    override func drawRect(rect: CGRect) {
+    override public func drawRect(rect: CGRect) {
         if let img = incrementalImage {
             img.drawInRect(rect)
             strokeColor.setStroke()
@@ -125,10 +125,10 @@ class DrawPathView: UIView {
     
     // MARK: - Touch Events -
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         delegate?.viewDrawStartedDrawing?()
-
+        
         ctr = 0
         let touch =  touches.first
         let p = (touch?.locationInView(self))!
@@ -139,7 +139,7 @@ class DrawPathView: UIView {
         drawBitmap(false)
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override public func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         let touch =  touches.first
         let p = (touch?.locationInView(self))!
@@ -160,12 +160,12 @@ class DrawPathView: UIView {
         }
     }
     
-    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+    override public func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
         touchesEnded(touches!, withEvent: event)
     }
     
-    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-
+    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
         delegate?.viewDrawEndedDrawing?()
         drawBitmap(true)
         setNeedsDisplay()
