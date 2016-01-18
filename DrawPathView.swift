@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc protocol DrawPathViewDelegate {
+@objc public protocol DrawPathViewDelegate {
     /// Triggered when user just started  drawing
     optional func viewDrawStartedDrawing()
     /// Triggered when user just finished  drawing
