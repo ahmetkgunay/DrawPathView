@@ -32,10 +32,10 @@ public class DrawPathView: UIView {
     /// This array stores the points that make each line
     private lazy var pts = Array<CGPoint!>(count: 5, repeatedValue: nil)
     
-    var delegate : DrawPathViewDelegate?
+    public var delegate : DrawPathViewDelegate?
     
     /// Stroke color of drawing path, default is red.
-    var strokeColor = UIColor.redColor()
+    private var strokeColor = UIColor.redColor()
     
     /// Stores all ımages to get back to last - 1 image. Becase erase last needs this :)
     private var allImages = Array<UIImage>()
@@ -57,7 +57,7 @@ public class DrawPathView: UIView {
         createPath()
     }
     
-    convenience init(initialImage: UIImage) {
+    public init(initialImage: UIImage) {
         self.init()
         self.incrementalImage = initialImage
         self.initialImage = initialImage;
@@ -77,7 +77,7 @@ public class DrawPathView: UIView {
     }
     
     /// Erases All paths
-    func clearAll() {
+    public func clearAll() {
         allImages.removeAll()
         ctr = 0
         path?.removeAllPoints()
@@ -88,7 +88,7 @@ public class DrawPathView: UIView {
     }
     
     /// Erases Last Path
-    func clearLast() {
+    public func clearLast() {
         if allImages.count == 0 {
             return
         }
@@ -103,7 +103,7 @@ public class DrawPathView: UIView {
     
     // MARK: - Change Stroke Color -
     
-    internal func changeStrokeColor(color:UIColor!) {
+    public func changeStrokeColor(color:UIColor!) {
         strokeColor = color
     }
     
@@ -177,7 +177,7 @@ public class DrawPathView: UIView {
     
     // MARK: - Bitmap -
     
-    func drawBitmap(endDrawing:Bool) {
+    private func drawBitmap(endDrawing:Bool) {
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
         drawRect(self.bounds)
         if let pth = path {
