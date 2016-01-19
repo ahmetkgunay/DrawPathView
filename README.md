@@ -6,6 +6,8 @@
 
 Drawable View with any colors you want to fill and can be erased last path or all paths anytime
 
+![Anim](ahmetkgunay.github.com/DrawPathView/anim.gif)
+
 ## Usage
 
 Usage is simple, you can just add as a subview DrawPathView which is inheritted from UIView to any Custom view.
