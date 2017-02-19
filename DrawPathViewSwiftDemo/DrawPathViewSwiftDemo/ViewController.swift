@@ -20,7 +20,7 @@ class ViewController: UIViewController, DrawPathViewDelegate {
     final let selectedBorderWidth = CGFloat(3)
     final let bottomViewHeight = CGFloat(44)
     final let buttonHeight = CGFloat(40)
-    final let colors = [UIColor.red, UIColor.green, UIColor.orange, UIColor.yellow, UIColor.purple]
+    final let colors = [UIColor.red, .green, .orange, .yellow, .purple]
     
     // MARK: - View lifecycle -
 
