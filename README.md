@@ -16,6 +16,7 @@ Usage is simple, you can just add as a subview DrawPathView which is inheritted 
 
     lazy var drawView : DrawPathView = {
         let dv = DrawPathView(frame: self.view.bounds)
+        dv.lineWidth = 10.0
         dv.delegate = self
         return dv
     }()
