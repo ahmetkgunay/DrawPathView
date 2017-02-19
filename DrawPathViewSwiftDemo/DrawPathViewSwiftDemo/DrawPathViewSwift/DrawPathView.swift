@@ -10,50 +10,58 @@ import UIKit
 
 @objc public protocol DrawPathViewDelegate {
     /// Triggered when user just started  drawing
-    optional func viewDrawStartedDrawing()
+    @objc optional func viewDrawStartedDrawing()
     /// Triggered when user just finished  drawing
-    optional func viewDrawEndedDrawing()
+    @objc optional func viewDrawEndedDrawing()
 }
 
-public class DrawPathView: UIView {
+open class DrawPathView: UIView {
     
     /// A counter to determine if there are enough points to make a quadcurve
-    private var ctr = 0
+    fileprivate var ctr = 0
     
     /// The path to stroke
-    private var path : UIBezierPath?
+    fileprivate var path : UIBezierPath?
     
     /// After the user lifts their finger and the line has been finished the same line is rendered to an image and the UIBezierPath is cleared to prevent performance degradation when lots of lines are on screen
-    private var incrementalImage : UIImage?
+    fileprivate var incrementalImage : UIImage?
     
     /// Initial Image If user needs to draw lines on image firstly
-    private var initialImage : UIImage?
+    fileprivate var initialImage : UIImage?
     
     /// This array stores the points that make each line
-    private lazy var pts = Array<CGPoint!>(count: 5, repeatedValue: nil)
+    fileprivate lazy var pts = Array<CGPoint!>(repeating: nil, count: 5)
     
-    public var delegate : DrawPathViewDelegate?
+    open var delegate : DrawPathViewDelegate?
     
     /// Stroke color of drawing path, default is red.
-    private var strokeColor = UIColor.redColor()
+    fileprivate var strokeColor = UIColor.red
     
     /// Stores all ımages to get back to last - 1 image. Becase erase last needs this :)
-    private var allImages = Array<UIImage>()
+    fileprivate var allImages = Array<UIImage>()
+    
+    public var lineWidth: CGFloat = 2.0 {
+        
+        didSet {
+            createPath()
+        }
+    }
+
     
     // MARK: - Initialize -
     
     required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         
-        self.multipleTouchEnabled = true
-        self.backgroundColor = UIColor.whiteColor()
+        self.isMultipleTouchEnabled = true
+        self.backgroundColor = UIColor.white
         createPath()
     }
     
     required override public init(frame: CGRect) {
         super.init(frame: frame)
-        self.multipleTouchEnabled = true
-        self.backgroundColor = UIColor.whiteColor()
+        self.isMultipleTouchEnabled = true
+        self.backgroundColor = UIColor.white
         createPath()
     }
     
@@ -61,23 +69,24 @@ public class DrawPathView: UIView {
         self.init()
         self.incrementalImage = initialImage
         self.initialImage = initialImage;
-        self.multipleTouchEnabled = true
-        self.backgroundColor = UIColor.whiteColor()
+        self.isMultipleTouchEnabled = true
+        self.backgroundColor = UIColor.white
         if let img = incrementalImage {
-            img.drawInRect(self.bounds)
+            img.draw(in: self.bounds)
         }
         createPath()
     }
     
     // MARK: - Setup -
     
-    private func createPath() {
+    fileprivate func createPath() {
+        path = nil
         path = UIBezierPath()
-        path!.lineWidth = 2
+        path!.lineWidth = lineWidth
     }
     
     /// Erases All paths
-    public func clearAll() {
+    open func clearAll() {
         allImages.removeAll()
         ctr = 0
         path?.removeAllPoints()
@@ -88,7 +97,7 @@ public class DrawPathView: UIView {
     }
     
     /// Erases Last Path
-    public func clearLast() {
+    open func clearLast() {
         if allImages.count == 0 {
             return
         }
@@ -103,55 +112,55 @@ public class DrawPathView: UIView {
     
     // MARK: - Change Stroke Color -
     
-    public func changeStrokeColor(color:UIColor!) {
+    open func changeStrokeColor(_ color:UIColor!) {
         strokeColor = color
     }
     
     // MARK: - Draw Method -
     
-    override public func drawRect(rect: CGRect) {
+    override open func draw(_ rect: CGRect) {
         if let img = incrementalImage {
-            img.drawInRect(rect)
+            img.draw(in: rect)
             strokeColor.setStroke()
             if let pth = path {
                 pth.stroke()
             }
         } else {
             let rectPth = UIBezierPath(rect: self.bounds)
-            UIColor.whiteColor().setFill()
+            UIColor.white.setFill()
             rectPth.fill()
         }
     }
     
     // MARK: - Touch Events -
     
-    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         delegate?.viewDrawStartedDrawing?()
         
         ctr = 0
         let touch =  touches.first
-        let p = (touch?.locationInView(self))!
+        let p = (touch?.location(in: self))!
         pts[0] = p
         if let pth = path {
-            pth.moveToPoint(p)
+            pth.move(to: p)
         }
         drawBitmap(false)
     }
     
-    override public func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         let touch =  touches.first
-        let p = (touch?.locationInView(self))!
-        ctr++
+        let p = (touch?.location(in: self))!
+        ctr += 1
         pts[ctr] = p
         
         if ctr == 4 {
             // move the endpoint to the middle of the line joining the second control point of the first Bezier segment and the first control point of the second Bezier segment
-            pts[3] = CGPointMake((pts[2].x + pts[4].x)/2.0, (pts[2].y + pts[4].y)/2.0)
+            pts[3] = CGPoint(x: (pts[2].x + pts[4].x)/2.0, y: (pts[2].y + pts[4].y)/2.0)
             if let pth = path {
-                pth.moveToPoint(pts[0])
-                pth.addCurveToPoint(pts[3], controlPoint1: pts[1], controlPoint2: pts[2])
+                pth.move(to: pts[0])
+                pth.addCurve(to: pts[3], controlPoint1: pts[1], controlPoint2: pts[2])
             }
             setNeedsDisplay()
             pts[0] = pts[3]
@@ -160,11 +169,11 @@ public class DrawPathView: UIView {
         }
     }
     
-    override public func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
-        touchesEnded(touches!, withEvent: event)
+    override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        touchesEnded(touches, with: event)
     }
     
-    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         delegate?.viewDrawEndedDrawing?()
         drawBitmap(true)
@@ -177,9 +186,9 @@ public class DrawPathView: UIView {
     
     // MARK: - Bitmap -
     
-    private func drawBitmap(endDrawing:Bool) {
+    fileprivate func drawBitmap(_ endDrawing:Bool) {
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, true, 0.0)
-        drawRect(self.bounds)
+        draw(self.bounds)
         if let pth = path {
             pth.stroke()
         }

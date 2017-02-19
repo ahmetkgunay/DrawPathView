@@ -12,6 +12,7 @@ class ViewController: UIViewController, DrawPathViewDelegate {
     
     lazy var drawView : DrawPathView = {
         let dv = DrawPathView(frame: self.view.bounds)
+        dv.lineWidth = 10.0
         dv.delegate = self
         return dv
     }()
@@ -19,7 +20,7 @@ class ViewController: UIViewController, DrawPathViewDelegate {
     final let selectedBorderWidth = CGFloat(3)
     final let bottomViewHeight = CGFloat(44)
     final let buttonHeight = CGFloat(40)
-    final let colors = [UIColor.redColor(), UIColor.greenColor(), UIColor.orangeColor(), UIColor.yellowColor(), UIColor.purpleColor()]
+    final let colors = [UIColor.red, UIColor.green, UIColor.orange, UIColor.yellow, UIColor.purple]
     
     // MARK: - View lifecycle -
 
@@ -35,20 +36,20 @@ class ViewController: UIViewController, DrawPathViewDelegate {
     private func addBottomButtons() {
         
         for i in 0..<colors.count {
-            let btn = UIButton(type: UIButtonType.System)
+            let btn = UIButton(type: UIButtonType.system)
             let buttonContainerWidth = view.frame.size.width
             let xPos = CGFloat(i) * (buttonContainerWidth / 5) + 10
             let yPos = view.frame.size.height - bottomViewHeight
             btn.tag = i
             
             btn.backgroundColor = colors[i]
-            btn.frame = CGRectMake(xPos, yPos, buttonHeight, buttonHeight)
+            btn.frame = CGRect(x:xPos, y:yPos, width:buttonHeight, height:buttonHeight)
             btn.layer.cornerRadius = buttonHeight / 2
-            btn.layer.borderColor = UIColor.darkGrayColor().CGColor
+            btn.layer.borderColor = UIColor.darkGray.cgColor
             btn.layer.borderWidth = i == 0 ? selectedBorderWidth : 0
             btn.layer.masksToBounds = true
-
-            btn.addTarget(self, action: "btnColorTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            btn.addTarget(self, action:#selector(btnColorTapped(sender:)), for: .touchUpInside)
+            
             view.addSubview(btn)
         }
     }
@@ -56,15 +57,16 @@ class ViewController: UIViewController, DrawPathViewDelegate {
     private func addTopButtons() {
         
         for i in 0..<2 {
-            let btn = UIButton(type: UIButtonType.System)
+            let btn = UIButton(type: UIButtonType.system)
             let buttonContainerWidth = view.frame.size.width
             let xPos = CGFloat(i) * (buttonContainerWidth / 2) + 10
             let yPos = CGFloat(22)
             btn.tag = i
-            btn.frame = CGRectMake(xPos, yPos, buttonContainerWidth / 2 - 30, buttonHeight)
-            btn.setTitle(i == 0 ? "Erase Last" : "Erase All", forState: .Normal)
-            btn.setTitleColor(UIColor.blueColor(), forState: .Normal)
-            btn.addTarget(self, action: "btnEraseTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            btn.frame = CGRect(x:xPos, y:yPos, width:buttonContainerWidth / 2 - 30, height:buttonHeight)
+            btn.setTitle(i == 0 ? "Erase Last" : "Erase All", for: .normal)
+            btn.setTitleColor(UIColor.blue, for: .normal)
+            btn.addTarget(self, action:#selector(btnEraseTapped(sender:)), for: .touchUpInside)
+
             view.addSubview(btn)
         }
     }
@@ -82,7 +84,7 @@ class ViewController: UIViewController, DrawPathViewDelegate {
     
     private func clearButtons () {
         for subview in view.subviews {
-            if subview.isKindOfClass(UIButton.self) {
+            if subview is UIButton {
                 subview.layer.borderWidth = 0
             }
         }
