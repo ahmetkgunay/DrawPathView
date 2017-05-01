@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name             = "DrawPathView"
   s.version          = "0.1.4"
-  s.summary          = "Drawable View written in pure Swift2"
+  s.summary          = "Drawable View written in pure Swift3"
   s.description      = <<-DESC
-                        Easy to use drawable custom View written in pure Swift2. You can delete paths or delete last drawn path. You can also draw paths with any colors you want and change this color whenever you want.
+                        Easy to use drawable custom View written in pure Swift3. You can delete paths or delete last drawn path. You can also draw paths with any colors you want and change this color whenever you want.
                        DESC
 
   s.homepage         = "https://github.com/ahmetkgunay/DrawPathView"
