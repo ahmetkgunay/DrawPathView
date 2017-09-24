@@ -39,7 +39,7 @@ class ViewController: UIViewController, DrawPathViewDelegate {
             let btn = UIButton(type: UIButtonType.system)
             let buttonContainerWidth = view.frame.size.width
             let xPos = CGFloat(i) * (buttonContainerWidth / 5) + 10
-            let yPos = view.frame.size.height - bottomViewHeight
+            let yPos = view.frame.size.height - bottomViewHeight - 22
             btn.tag = i
             
             btn.backgroundColor = colors[i]
@@ -60,7 +60,7 @@ class ViewController: UIViewController, DrawPathViewDelegate {
             let btn = UIButton(type: UIButtonType.system)
             let buttonContainerWidth = view.frame.size.width
             let xPos = CGFloat(i) * (buttonContainerWidth / 2) + 10
-            let yPos = CGFloat(22)
+            let yPos = CGFloat(44)
             btn.tag = i
             btn.frame = CGRect(x:xPos, y:yPos, width:buttonContainerWidth / 2 - 30, height:buttonHeight)
             btn.setTitle(i == 0 ? "Erase Last" : "Erase All", for: .normal)
@@ -73,7 +73,7 @@ class ViewController: UIViewController, DrawPathViewDelegate {
     
     // MARK: - Button Actions -
     
-    internal func btnColorTapped(sender : UIButton) {
+    @objc internal func btnColorTapped(sender : UIButton) {
         let index = sender.tag
         let selectedColor = colors[index]
         drawView.changeStrokeColor(selectedColor)
@@ -90,7 +90,7 @@ class ViewController: UIViewController, DrawPathViewDelegate {
         }
     }
     
-    internal func btnEraseTapped(sender : UIButton) {
+    @objc internal func btnEraseTapped(sender : UIButton) {
         
         let index = sender.tag;
         switch index {
