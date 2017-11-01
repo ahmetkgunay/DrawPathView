@@ -1,5 +1,4 @@
 # DrawPathView
-[![CI Status](http://img.shields.io/travis/Ahmet Kazım Günay/DrawPathView.svg?style=flat)](https://travis-ci.org/Ahmet Kazım Günay/DrawPathView)
 [![Version](https://img.shields.io/cocoapods/v/DrawPathView.svg?style=flat)](http://cocoapods.org/pods/DrawPathView)
 [![License](https://img.shields.io/cocoapods/l/DrawPathView.svg?style=flat)](http://cocoapods.org/pods/DrawPathView)
 [![Platform](https://img.shields.io/cocoapods/p/DrawPathView.svg?style=flat)](http://cocoapods.org/pods/DrawPathView)
